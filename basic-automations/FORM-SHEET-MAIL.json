@@ -1,0 +1,226 @@
+{
+  "name": "FORM-SHEET-MAIL",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Consultation Form",
+        "formDescription": "Hey There, Thanks for considering us!\nYou can fill in your details here and we will get back to you soon. Thank you!",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Your Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Contact ",
+              "fieldType": "number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Address(City)",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Submit"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -272,
+        64
+      ],
+      "id": "046601f5-fc5c-4a86-9421-843973718280",
+      "name": "On form submission",
+      "webhookId": "66c0e3e4-e6f1-420e-9ce1-b13043b20aba"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BxzsL7ju0ueJ7Mds6vf1hfFVNg8eBx9fxK6hLDUm5tQ",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BxzsL7ju0ueJ7Mds6vf1hfFVNg8eBx9fxK6hLDUm5tQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BxzsL7ju0ueJ7Mds6vf1hfFVNg8eBx9fxK6hLDUm5tQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json['Your Name'] }}",
+            "Contact": "={{ $json['Contact '] }}",
+            "Email": "={{ $json.Email }}",
+            "Address(City)": "={{ $json['Address(City)'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Contact",
+              "displayName": "Contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Address(City)",
+              "displayName": "Address(City)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        64
+      ],
+      "id": "5f4dc527-8332-4835-a83d-dd139885b858",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1Dyf1UAifKCmdTgb",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "Acknowledgment For Your Consultation Request.",
+        "message": "=Hii  {{ $json.Name }},\n\nHope your doing well!\n\nThis is to inform you that, we have successfully recieved your consultation request and we will be reaching as soon as possible. \n\nThanks\nAutomationAiAndMuchMore",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        144,
+        64
+      ],
+      "id": "cad2a528-3b82-4693-a971-8a9b13621bc0",
+      "name": "Send a message",
+      "webhookId": "80325672-f208-4438-b979-68d7cdd010bc",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zZGQhOTYIMeUpdVd",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Form - Sheet - Email Automation \n\n## First Automation\n\n### This is the basic practical automation to understand the working on nodes.",
+        "height": 192,
+        "width": 800,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "b20e5f29-1b73-44f2-b754-917418c1366e",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "dccf91a1-5a82-4eee-8251-3efc5df8c1ff",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c6e20271c60629498be1145be699d7fc95899dbe2d868364b81159e359e77782"
+  },
+  "id": "chCsW25bOU0otfT3",
+  "tags": [
+    {
+      "createdAt": "2025-09-02T20:08:10.775Z",
+      "updatedAt": "2025-09-02T20:08:10.775Z",
+      "id": "QDeiB06qLcqxSvhz",
+      "name": "basic"
+    },
+    {
+      "createdAt": "2025-09-02T20:08:03.004Z",
+      "updatedAt": "2025-09-02T20:08:03.004Z",
+      "id": "wbhvzgGeY0Xc9xSM",
+      "name": "first-automation"
+    }
+  ]
+}

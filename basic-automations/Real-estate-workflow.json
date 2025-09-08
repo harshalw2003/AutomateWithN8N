@@ -1,0 +1,393 @@
+{
+  "name": "Real-estate-workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QcI_6PCU0hdpSZb7cZaBCxBYzqB1rdYambqUvyFnDaA",
+          "mode": "list",
+          "cachedResultName": "Potential_Costumers",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QcI_6PCU0hdpSZb7cZaBCxBYzqB1rdYambqUvyFnDaA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QcI_6PCU0hdpSZb7cZaBCxBYzqB1rdYambqUvyFnDaA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json['Full Name'] }}",
+            "Bugdet": "={{ $json['Your Budget'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Bugdet",
+              "displayName": "Bugdet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nationality",
+              "displayName": "Nationality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -736,
+        -112
+      ],
+      "id": "f9a64e80-c15b-437c-b045-530026ba61c7",
+      "name": "Create spreadsheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1Dyf1UAifKCmdTgb",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.genderize.io/?name={{ $('On form submission').item.json['Full Name'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -528,
+        -112
+      ],
+      "id": "56c747c3-5c6a-434f-9f9a-4ae9f4c446a3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.nationalize.io/?name={{ $('On form submission').item.json['Full Name'] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -336,
+        -112
+      ],
+      "id": "e30fa810-adbd-4e93-a5db-766072729534",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1QcI_6PCU0hdpSZb7cZaBCxBYzqB1rdYambqUvyFnDaA",
+          "mode": "list",
+          "cachedResultName": "Potential_Costumers",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QcI_6PCU0hdpSZb7cZaBCxBYzqB1rdYambqUvyFnDaA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QcI_6PCU0hdpSZb7cZaBCxBYzqB1rdYambqUvyFnDaA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Create spreadsheet').item.json.Name }}",
+            "Bugdet": "={{ $('Create spreadsheet').item.json.Bugdet }}",
+            "Gender": "={{ $('HTTP Request').item.json.gender }}",
+            "Nationality": "={{ $json.country[0].country_id }}",
+            "ID": "={{ $('Create spreadsheet').item.json.ID }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Bugdet",
+              "displayName": "Bugdet",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Gender",
+              "displayName": "Gender",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nationality",
+              "displayName": "Nationality",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -160,
+        -112
+      ],
+      "id": "6b56d6a5-114b-4b4f-a318-465f8931c5f1",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1Dyf1UAifKCmdTgb",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "harshalwarukar1910@gmail.com",
+        "subject": "={{ $json.choices[0].message.content.subject }}",
+        "message": "={{ $json.choices[0].message.content.body }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        288,
+        -112
+      ],
+      "id": "2c5d53ff-8b6e-4f6a-89bb-91cae3182fcc",
+      "name": "Send a message",
+      "webhookId": "3bcb079b-0dd9-473a-8779-485e150b26ca",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "zZGQhOTYIMeUpdVd",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Enquiry Form",
+        "formDescription": "Please fill in your details and we will get back to you as soon as possible, Thank you!",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Your Budget",
+              "fieldType": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -912,
+        -112
+      ],
+      "id": "b4c5e046-70a4-4973-a910-ab3b22934db7",
+      "name": "On form submission",
+      "webhookId": "b034082d-b886-4857-b8ff-cf3f628527bf"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You have to write a mail to me about a new client lead. Make sure the mail is detailed and infomative and consist of following details and message of reaching out to client ASAP.\n\nName: {{ $json.Name }}\nBudget: {{ $json.Bugdet }}\nGender: {{ $json.Gender}} \nNationality: {{ $json.Nationality }}\n\n\n\nPleae make you proivde output in strict json format as below, Please keep the body in html format so that it looks nuice and readable:\n\n{\n\nsubject:\nbody: \n\n}\n}\n\n"
+            }
+          ]
+        },
+        "simplify": false,
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        0,
+        -112
+      ],
+      "id": "3c1d9ef8-383c-4aa1-862c-d0457b9d5a52",
+      "name": "Message a model",
+      "executeOnce": false,
+      "credentials": {
+        "openAiApi": {
+          "id": "4SgpvTMDAW9WS2Mn",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Create spreadsheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Create spreadsheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2e662655-e502-4b55-b6e9-bea319f7bb2f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c6e20271c60629498be1145be699d7fc95899dbe2d868364b81159e359e77782"
+  },
+  "id": "sryWNxqJ12ABM2RJ",
+  "tags": []
+}
